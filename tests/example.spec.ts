@@ -1,30 +1,20 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
+const checkTextWritingTestPage = ['Introduction', 'First test', 'Actions', 'Assertions'];
+
+test('first test - check header`s text', async ({page}) => {
   await page.goto('https://playwright.dev/');
-
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
-
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-
-  // Click the get started link.
   await page.getByRole('link', { name: 'Get started' }).click();
+  await page.getByRole('link', { name: 'Writing tests', exact: true }).click();
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-});
+  // check main header
+  await expect(page.getByLabel('Docs sidebar')).toContainText('Writing tests');
 
-test('get VC instalation link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
-
-  await page.getByRole('link', { name: 'VS Code Extension' }).click();
-
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Getting started - VS Code' })).toBeVisible();
+  // check subheader
+  await expect(page.locator('#introduction')).toContainText(checkTextWritingTestPage[0]);
+  await expect(page.locator('#first-test')).toContainText(checkTextWritingTestPage[1]);
+  await expect(page.locator('#actions')).toContainText(checkTextWritingTestPage[2]);
+  await expect(page.locator('#assertions')).toContainText(checkTextWritingTestPage[3]);
+  
+  
 });
